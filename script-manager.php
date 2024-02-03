@@ -1,0 +1,10 @@
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/vendor/jquery.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/vendor/modernizer.min.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/vendor/feather.min.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/vendor/slick.min.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/vendor/bootstrap.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/vendor/text-type.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/vendor/wow.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/vendor/aos.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/vendor/particles.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/main.js"></script>

@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>Admin_Ordinances</title>
+    <!-- Include necessary CSS -->
+    <link rel="stylesheet" type="text/css" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <!-- Include SweetAlert library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+        }
+
+        .reveal-modal {
+            background-color: #a7d3ae;
+        }
+
+        .modal-content {
+            background-color: #a7d3ae;
+        }
+
+        .viewUserAnnouncement {
+            width: 70%;
+            height: 20%;
+            background-color: #436b95;
+            color: white;
+            border: 10px solid #436b95;
+            border-radius: 10px;
+            padding: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .viewUserAnnouncement:hover {
+            color: #594d2d;
+            background-color: white;
+            border: 10px solid white;
+        }
+
+        .card-announcement {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-top: 10%;
+        }
+
+        .card-body {
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+
+        }
+
+        .reveal-btn {
+            margin-top: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            background-color: #91b491;
+            color: black;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .btn-info,
+        .btn-danger {
+
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        aside a {
+            text-decoration: none;
+        }
+
+        .btn-custom-color {
+            background-color: #76a5af;
+            color: white;
+            height: 45px;
+            font-weight: bold;
+
+        }
+
+
+
+        .table-responsive {
+            overflow-y: auto;
+            max-height: 500px;
+            /* Adjust the height based on your preference */
+        }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            /* Header background color */
+            z-index: 1;
+        }
+
+        .table thead {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            /* Header background color */
+            z-index: 1;
+        }
+
+        /* Style for the buttons */
+        #applyFilters,
+        #clearFilters {
+            background-color: #e6e6fa;
+            /* Apply Filters button color */
+            color: #000;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-weight: bold;
+            width: 200px;
+            height: 40px;
+        }
+
+        .btn-info {
+            background-color: #e6e6fa;
+            /* Apply Filters button color */
+            color: black;
+            margin-bottom: 5px;
+
+        }
+
+        .btn-danger {
+            background-color: #800020;
+            /* Clear Filters button color */
+
+        }
+
+        #clearFilters {
+            background-color: #800020;
+            /* Clear Filters button color */
+            color: #fff;
+        }
+
+        div.filter-form {
+            margin-bottom: 20px;
+        }
+
+        div.filter-form label {
+            margin-right: 10px;
+        }
+
+        div.filter-form select,
+        div.filter-form input[type="date"] {
+            margin-right: 20px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+
+        /*form style */
+
+        .form-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-container form {
+            width: 70%;
+        }
+
+        .form-container img {
+            width: 50%;
+            max-height: 300px;
+            /* Set the maximum height of the image */
+            object-fit: cover;
+            /* Maintain aspect ratio and cover the container */
+            border: 0px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* For large devices */
+        @media screen and (min-width: 1150px) {
+            .form-container img {
+                width: 30%;
+                max-height: 700px;
+                /* Set the maximum height of the image */
+                object-fit: cover;
+                /* Maintain aspect ratio and cover the container */
+                border: 0px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .btn-custom-color {
+                background-color: #76a5af;
+                color: white;
+                height: 40px;
+                font-weight: bold;
+                font-size: 11px;
+
+            }
+        }
+
+        @media (min-width: 374px) {
+
+            /* Mobile styles */
+            .form-container img {
+                max-height: 130px;
+                /* Adjust the maximum height for mobile devices */
+                max-width: 100px;
+
+            }
+
+            .form-container form {
+                width: 60%;
+
+
+            }
+
+
+
+
+
+
+
+        }
+
+        @media (min-width: 768px) {
+
+            /* Tablet styles */
+            .form-container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .form-container img {
+                max-height: 300px;
+                /* Adjust the maximum height for mobile devices */
+
+            }
+
+            .btn-custom-color {
+                background-color: #76a5af;
+                color: white;
+                height: 40px;
+                font-weight: bold;
+                font-size: 11px;
+
+            }
+        }
+
+        .alert-container {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            color: black;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            font-weight: bold;
+            font-size: 16px;
+            width: 50%;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            font-weight: bold;
+            font-size: 16px;
+            width: 50%;
+
+
+        }
+    </style>
+
+    <script>
+        function confirmDelete(contentId) {
+            // Use SweetAlert2 for confirmation
+            Swal.fire({
+                title: 'Are you sure to delete?',
+                text: 'You won\'t be able to retrieve this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If user clicks "Yes," proceed with deletion
+                    window.location.href = 'admin_ordinances.php?id=' + contentId + '&confirmDelete=true';
+                }
+            });
+        }
+
+        function openFullContentModal(contentId) {
+            var modal = new bootstrap.Modal(document.getElementById('modal-' + contentId));
+            modal.show();
+        }
+    </script>
+</head>
+
+<body class="hold-transition sidebar-mini">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+        <!-- Include the dashboard navbar -->
+        <nav class="main-header navbar navbar-expand navbar-light fixed-top"
+            style="background-color: #fff; border-bottom: 1px solid #ddd;">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <!-- <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link" style="color: #000; font-weight:bold;">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link" style="color: #000; font-weight:bold;">Contact</a>
+        </li> -->
+            </ul>
+
+            <!-- SEARCH FORM
+    <form class="form-inline ml-3">
+        <div class="input-group input-group-sm" style="background-color: white; border: 1px solid black; border-radius: 4px;">
+            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" style="background-color: white; color: #fff;">
+            <div class="input-group-append">
+                <button class="btn btn-navbar" type="submit" style="color: gray; background-color: white; color:black;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </form> -->
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Messages Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#" style="color: #76a5af; font-weight:bold;">
+                        Staff Test <i class="far fa-user"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a href="admin_edit_profile.php" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        <b>Edit Profile</b>
+                                        <span class="float-right text-sm text-success"><i
+                                                class="fas fa-user"></i></span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="logout.php" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        <b>Logout</b>
+                                        <span class="float-right text-sm text-danger"><i class="fas fa-home"></i></span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-1"
+            style="background-color: white; position: fixed; height: 100%; overflow: hidden;">
+
+
+
+            <!-- Sidebar -->
+            <div class="sidebar" style="background-color: white;">
+                <!-- Brand Logo -->
+                <a href="#" class="brand-link" style="background-color: white; color: black; font-size:16px;">
+                    <span class="brand-text font-weight-dark"><b> SOLISYNC | STAFF</b></span>
+                </a>
+                <!-- Sidebar user (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="image/def_profile_admin.png" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block" style="color:#76a5af; font-weight:bold; font-size:15px;">Staff
+                            Test</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false" style="background-color: white; font-size:13px;">
+                        <!-- Add icons to the links using the .nav-icon class
+           with font-awesome or any other icon font library -->
+
+
+                        <li class="nav-item">
+                            <a href="main_dashboard.php" class="nav-link" style="color: #000;">
+                                <i class="nav-icon fas fa-tachometer-alt" style="color: #c14444;"></i>
+                                <p>
+                                    Dashboard
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="dashboard.php" class="nav-link" style="color: #000;">
+                                <i class="nav-icon fas fa-clipboard" style="color: #9999bb;"></i>
+
+                                <p>
+                                    Solicitation Record
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="admin_ordinances.php" class="nav-link" style="color: #000;">
+                                <i class="nav-icon fas fa-scroll" style="color: #adcfd8;"></i>
+                                <p>
+                                    Announcements
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="admin_recentActivities.php" class="nav-link" style="color: #000;">
+                                <i class="nav-icon fas fa-tasks" style="color: #dea5a4;"></i>
+                                <p>
+                                    Activities
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="admin_recentOrdinance.php" class="nav-link" style="color: #000;">
+                                <i class="nav-icon fas fa-book" style="color: #80755a  ;"></i>
+                                <p>
+                                    Ordinances
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="admin_monthlyReport.php" class="nav-link" style="color: #000;">
+                                <i class="nav-icon fas fa-chart-bar" style="color: #91b491;"></i>
+                                <p>
+                                    Reports
+                                    <span class="right badge badge-danger"></span>
+                                </p>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="padding:30px; background-color: #eeeeee; padding-bottom:45px;">
+            <!-- Content Header (Page header) -->
+            <br><br><br>
+
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Announcements</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="admin_ordinances.php">Home</a></li>
+                                <li class="breadcrumb-item active">Announcements</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Add this code above your form to display messages -->
+
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title"><b>Post an Announcement</b> </h3>
+                                </div>
+                                <div class="card-body">
+
+
+                                    <!-- Add this code above your form to display messages -->
+                                    <div class="alert-container">
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                    <div class="form-container">
+
+
+
+
+
+
+
+                                        <form action="admin_ordinances.php" method="post" enctype="multipart/form-data">
+
+
+
+
+                                            <div class="form-group">
+                                                <label for="title">Title:</label>
+                                                <input type="text" name="title" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="content">Content:</label>
+                                                <textarea name="content" class="form-control" required></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="image">Upload Image:</label>
+                                                <input type="file" name="image">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label for="postedBy">Posted By:</label>
+                                                <input type="text" name="postedBy" class="form-control"
+                                                    value="Staff Test" readonly>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-custom-color">Post</button>
+                                            <a class="viewUserAnnouncement" href="user-page.php">View in Page</a>
+                                        </form>
+
+                                        <img src="assets/img/side_announcement.svg" alt="SVG Image">
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Default box -->
+                    <div class="card" style="border: 1px solid #ddd; padding:20px;">
+
+                        <div class="card-header" style="background-color: white;">
+                            <h3 class="card-title" style="color: #91b491; font-weight:bold;">List of Announcements</h3>
+
+
+                        </div>
+
+                        <br><br>
+                        <div class="filter-form row">
+
+                            <div class="col-md-3 mb-2">
+                                <label for="startDate">Start Date:</label>
+                                <input type="date" id="startDate">
+
+                            </div>
+
+                            <div class="col-md-3 mb-2">
+                                <label for="endDate">End Date:</label>
+                                <input type="date" id="endDate">
+                            </div>
+
+
+                            <button id="applyFilters">Apply Filters</button>
+                            <button id="clearFilters">Clear Filters</button>
+                        </div>
+
+                        <br><br>
+                        <div class="table-responsive">
+                            <table class="table" id="example1">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Photos</th>
+                                    <th>Title</th>
+                                    <th>Content</th>
+                                    <th>Posted By</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>hfgh</td>
+                                        <td>gfh</td>
+                                        <td>Jason Tabua</td>
+                                        <td>February 2, 2024 1:22 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=120" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(120)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>announcement title edited</td>
+                                        <td>announcement content</td>
+                                        <td>Jason Tabua</td>
+                                        <td>February 2, 2024 11:08 AM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=119" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(119)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>gdfg</td>
+                                        <td>dfg</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 30, 2024 5:09 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=109" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(109)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>uuu</td>
+                                        <td>uuu</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 29, 2024 8:44 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=97" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(97)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>uuuu</td>
+                                        <td>uuuu</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 29, 2024 8:41 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=96" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(96)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>wwww</td>
+                                        <td>www</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 29, 2024 8:39 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=95" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(95)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>lalala</td>
+                                        <td>lalala</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 29, 2024 8:37 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=94" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(94)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>hfghf</td>
+                                        <td>hfgh</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 29, 2024 8:33 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=92" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(92)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>hfgh</td>
+                                        <td>fgh</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 29, 2024 8:20 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=90" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(90)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal"
+                                                data-src="uploads/Cavite Provincial Capitol.jpg">
+                                                <img src="uploads/Cavite Provincial Capitol.jpg" class="img-circle"
+                                                    width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>fghf</td>
+                                        <td>hfgh</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 29, 2024 8:18 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=89" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(89)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="uploads/download (20).jpg">
+                                                <img src="uploads/download (20).jpg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>ghfh</td>
+                                        <td>hfgjh</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 29, 2024 7:12 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=88" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(88)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>fgh</td>
+                                        <td>gfh</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 8, 2024 2:20 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=86" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(86)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>January </td>
+                                        <td>January Content sample.</td>
+                                        <td>Jason Tabua</td>
+                                        <td>January 8, 2024 2:04 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=85" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(85)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>14</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="assets/img/announcement.svg">
+                                                <img src="assets/img/announcement.svg" class="img-circle" width="50"
+                                                    height="50">
+                                            </a>
+                                        </td>
+                                        <td>Important Announcement: Upcoming Maintenance</td>
+                                        <td>Dear valued members,
+
+                                            We would like to inform you that there will be scheduled maintenance on our
+                                            platform on [Date] at [Time]. During this maintenance window, access to the
+                                            platform may be temporarily unavailable.
+
+                                            We apologize for any inconvenience this may cause and appreciate your
+                                            understanding. If you have any urgent matters or concerns, please feel free
+                                            to contact our support team.
+
+                                            Thank you for your cooperation.
+
+                                            Best regards,
+                                            [Your Organization Name]</td>
+                                        <td>Jason Tabua</td>
+                                        <td>December 16, 2023 7:17 AM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=80" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(80)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>15</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="uploads/PICAD2018-267-768x650.jpg">
+                                                <img src="uploads/PICAD2018-267-768x650.jpg" class="img-circle"
+                                                    width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>Save the Date: Grand Opening of Our New Store!</td>
+                                        <td>Dear [Community/Customer],
+
+                                            We are thrilled to invite you to the grand opening of our new store! After
+                                            much anticipation, we are excited to share this momentous occasion with our
+                                            valued customers and the community.
+
+                                            Event Details:
+
+                                            Date: [Insert Date]
+                                            Time: [Insert Time]
+                                            Location: [Store Address]
+
+                                            Highlights of the Grand Opening
+
+                                            Save the date, mark your calendars, and get ready for a memorable
+                                            celebration at [Store Name]!
+
+                                            Best regards,
+                                            The [Store Name] Team</td>
+                                        <td>BM Kerby Salazar</td>
+                                        <td>December 4, 2023 7:38 AM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=51" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(51)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>16</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal"
+                                                data-src="uploads/ec09ec14-6975-4d6c-8a09-c2816b35659c.png">
+                                                <img src="uploads/ec09ec14-6975-4d6c-8a09-c2816b35659c.png"
+                                                    class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>1 | Exciting News: Launch of Our New Website!</td>
+                                        <td>Dear [Company/Organization] Community,
+
+                                            We are thrilled to announce the launch of our brand-new website! After
+                                            months of hard work and dedication, we are delighted to officially share it
+                                            with you.
+
+                                            Our goal with the new website is to provide our visitors with an
+                                            easy-to-navigate platform that showcases our products/services, highlights
+                                            our company values, and offers valuable resources. The website features a
+                                            fresh, modern design, improved functionality, and enriched content to help
+                                            you learn more about [Company/Organization].
+
+                                            Key features of the new website include:
+
+                                            User-Friendly Interface: Enjoy a seamless browsing experience with our
+                                            intuitive design.
+                                            Updated Content: Explore detailed information about our products/services
+                                            and stay informed about the latest developments in our industry.
+                                            Resource Center: Access valuable resources such as articles, guides, and
+                                            videos to enhance your knowledge.
+                                            We invite you to visit the new website at [insert website URL] and explore
+                                            all the exciting features it has to offer. Your feedback is important to us,
+                                            so please feel free to share your thoughts and suggestions.
+
+                                            Thank you for your continued support. We hope you enjoy exploring our new
+                                            online home!
+
+                                            Best regards,
+                                            The [Company/Organization] Team</td>
+                                        <td>Nieves Lilac </td>
+                                        <td>December 4, 2023 7:36 AM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=50" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(50)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>17</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="uploads/PICAD2018-267-768x650.jpg">
+                                                <img src="uploads/PICAD2018-267-768x650.jpg" class="img-circle"
+                                                    width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>New Project Launch</td>
+                                        <td>We are excited to announce the launch of our new project, which aims to
+                                            improve the efficiency and quality of our services. The project involves
+                                            implementing a new software system that will automate some of the tasks and
+                                            streamline the workflow. The project will also provide more opportunities
+                                            for collaboration and feedback among the team members and the clients. The
+                                            project will start on Monday, November 20th, and will last for six months.
+                                            During this time, we will provide regular updates and training sessions to
+                                            help you adapt to the new system. We will also solicit your input and
+                                            suggestions to make sure the project meets your needs and expectations.
+
+                                            We believe that this project will bring many benefits to our organization
+                                            and our customers. We appreciate your support and cooperation in making this
+                                            project a success. If you have any questions or concerns, please contact the
+                                            project manager at project@company.com.</td>
+                                        <td></td>
+                                        <td>November 17, 2023 4:24 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=25" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(25)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>18</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="uploads/BLACK ZORO WALLPAPER.jpg">
+                                                <img src="uploads/BLACK ZORO WALLPAPER.jpg" class="img-circle"
+                                                    width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>gdfg</td>
+                                        <td>fdg</td>
+                                        <td></td>
+                                        <td>November 17, 2023 3:28 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=24" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(24)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>19</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="uploads/Gato.jpg">
+                                                <img src="uploads/Gato.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>sgdfg</td>
+                                        <td>dfg</td>
+                                        <td></td>
+                                        <td>November 17, 2023 3:16 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=22" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(22)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>20</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="uploads/BLACK ZORO WALLPAPER.jpg">
+                                                <img src="uploads/BLACK ZORO WALLPAPER.jpg" class="img-circle"
+                                                    width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>Exciting News | Unveiling Our New Website!</td>
+                                        <td>Dear [Company/Organization] Community,
+
+                                            We are thrilled to share some exciting news with you - the launch of our
+                                            brand new website! After months of hard work and dedication, we are
+                                            delighted to officially announce the unveiling.
+
+                                            The new site features a fresh, modern design, improved functionality, and
+                                            enhanced content to provide you with an even better experience. Whether
+                                            you&#039;re a long-time member of our community or a newcomer, we believe
+                                            you&#039;ll find the new website easier to navigate and packed with valuable
+                                            information.
+
+                                            Key Features:
+
+                                            Sleek Design: Our new website boasts a clean and contemporary design to
+                                            ensure a user-friendly experience.
+                                            Improved Navigation: We&#039;ve restructured our content to make it easier
+                                            for you to find what you&#039;re looking for quickly and efficiently.
+                                            Mobile Responsiveness: Access our site seamlessly from your desktop, tablet,
+                                            or mobile device for a consistent experience on the go.
+                                            Rich Content: Explore updated and expanded content, including articles,
+                                            resources, and multimedia to keep you informed and engaged.
+                                            We would like to express our gratitude to the [mention any teams,
+                                            developers, or partners involved] who worked tirelessly on this project.
+                                            Their dedication and expertise have been instrumental in bringing this
+                                            vision to life.
+
+                                            We invite you to visit the new website at [insert website URL] and explore
+                                            all the exciting changes. Your feedback is important to us, so feel free to
+                                            share your thoughts and suggestions.
+
+                                            Thank you for being a part of the [Company/Organization] community. We look
+                                            forward to continuing to serve you better with our enhanced online presence.
+
+                                            Best regards,
+
+                                            [Your Name]
+                                            [Your Title]
+                                            [Company or Organization Name]</td>
+                                        <td></td>
+                                        <td>November 17, 2023 2:31 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=17" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(17)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>21</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="upload/Default.jpg">
+                                                <img src="upload/Default.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>HI</td>
+                                        <td>HGH</td>
+                                        <td></td>
+                                        <td>November 17, 2023 1:19 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=16" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(16)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>22</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="upload/Default.jpg">
+                                                <img src="upload/Default.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>XCV</td>
+                                        <td>fdg</td>
+                                        <td></td>
+                                        <td>November 17, 2023 12:38 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=15" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(15)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>23</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="upload/Default.jpg">
+                                                <img src="upload/Default.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>FUN RUN EVENT</td>
+                                        <td>Hi!
+
+                                            We are pleased to inform you that the annual fun run event will take place
+                                            on Saturday, November 25th at 10:00 am. The fun run is a great opportunity
+                                            to enjoy some physical activity, socialize with your colleagues, and support
+                                            a good cause. This year, we are raising funds for the local animal shelter,
+                                            which provides care and adoption services for homeless pets.
+
+                                            To participate in the fun run, you need to register online by November 20th
+                                            and pay a $10 fee. You will receive a confirmation email with your bib
+                                            number and other details. You can choose to run or walk the 5K course, which
+                                            starts and ends at the main entrance of our office building. There will be
+                                            water stations, volunteers, and medical staff along the way. After the fun
+                                            run, you are invited to join us for a barbecue lunch and a prize ceremony.
+
+                                            We hope you will join us for this fun and meaningful event. If you have any
+                                            questions, please contact the event coordinator at funrun@company.com. Thank
+                                            you for your support and enthusiasm.
+                                        </td>
+                                        <td></td>
+                                        <td>November 17, 2023 12:30 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=13" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(13)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>24</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="upload/Default.jpg">
+                                                <img src="upload/Default.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>Community Cleanup Day</td>
+                                        <td>Dear Residents,
+
+                                            We&#039;re excited to announce our upcoming Community Cleanup Day! On
+                                            [Date], we&#039;ll gather at [Location] to work together in making our
+                                            neighborhood cleaner and more beautiful.
+
+                                            Activities will include picking up litter, gardening, and small repairs
+                                            around the community. We encourage all residents, young and old, to join us
+                                            for a day of community building and positive impact.
+
+                                            Don&#039;t forget to bring your gardening gloves and a positive spirit!
+                                            Let&#039;s make our community a better place for everyone.
+
+                                            See you there!
+
+                                            Best regards,
+                                            [Your Community Name]
+                                            Management Team</td>
+                                        <td></td>
+                                        <td>November 17, 2023 12:09 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=12" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(12)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="upload/Default.jpg">
+                                                <img src="upload/Default.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>november announcement</td>
+                                        <td>edited announcement</td>
+                                        <td></td>
+                                        <td>November 13, 2023 3:37 PM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=11" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(11)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>26</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="upload/Default.jpg">
+                                                <img src="upload/Default.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>new sample announcement | EDITED</td>
+                                        <td>EDITED ANNOUNCEMENT.
+                                            EDITED ANNOUNCEMENT.
+                                            EDITED ANNOUNCEMENT.EDITED ANNOUNCEMENT.
+                                            EDITED ANNOUNCEMENT.</td>
+                                        <td></td>
+                                        <td>November 3, 2023 9:39 AM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=10" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(10)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>27</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="upload/Default.jpg">
+                                                <img src="upload/Default.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>Sample announcement to reveal</td>
+                                        <td>This is a sample long announcement content that contains a lot of text.
+                                            It&#039;s meant to test the functionality of revealing the full content when
+                                            the &quot;Reveal&quot; button is clicked. You can add more text here to see
+                                            how the toggleContent function works and displays the full content when
+                                            needed.
+
+                                            This is a sample long announcement content that contains a lot of text.
+                                            It&#039;s meant to test the functionality of revealing the full content when
+                                            the &quot;Reveal&quot; button is clicked. You can add more text here to see
+                                            how the toggleContent function works and displays the full content when
+                                            needed.
+
+                                            This is a sample long announcement content that contains a lot of text.
+                                            It&#039;s meant to test the functionality of revealing the full content when
+                                            the &quot;Reveal&quot; button is clicked. You can add more text here to see
+                                            how the toggleContent function works and displays the full content when
+                                            needed.
+                                        </td>
+                                        <td></td>
+                                        <td>November 3, 2023 7:51 AM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=8" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(8)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>28</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="upload/Default.jpg">
+                                                <img src="upload/Default.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>Announcement 4 - Sample</td>
+                                        <td>sample announcement 4</td>
+                                        <td></td>
+                                        <td>November 3, 2023 7:02 AM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=4" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(4)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>29</td>
+                                        <td>
+                                            <a href="#" class="image-preview-link" data-toggle="modal"
+                                                data-target="#imageModal" data-src="upload/Default.jpg">
+                                                <img src="upload/Default.jpg" class="img-circle" width="50" height="50">
+                                            </a>
+                                        </td>
+                                        <td>Lorem Ipsum Announcement</td>
+                                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
+                                        </td>
+                                        <td></td>
+                                        <td>November 3, 2023 6:31 AM</td>
+                                        <td>
+                                            <!-- Edit button -->
+                                            <a href="edit_announcement.php?id=1" class="btn btn-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <!-- Delete button with confirmation -->
+                                            <a href="#" class="btn btn-danger" onclick="confirmDelete(1)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+                                        </td>
+
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Image Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imageModalLabel"><b>Preview of Image</b></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="previewImage" class="img-fluid" src="" alt="Image Preview">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <footer class="main-footer fixed-bottom" style="background-color: #f8f9fa; color: #000;">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 3.0.5
+            </div>
+            <strong>BM KERBY SALAZAR &copy; 2014-2019 <a href="http://adminlte.io">General Trias Cavite</a>.</strong>
+            All rights
+            reserved.
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="dist/js/demo.js"></script>
+
+    <!-- DataTables -->
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Handle image preview
+            $('.image-preview-link').click(function () {
+                var imageUrl = $(this).data('src');
+                $('#previewImage').attr('src', imageUrl);
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": false,
+                "autoWidth": false,
+                "paging": true,
+                "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]], // Customize the "Show entries" dropdown
+
+
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('applyFilters').addEventListener('click', function () {
+                applyFilters();
+            });
+
+            document.getElementById('clearFilters').addEventListener('click', function () {
+                clearFilters();
+            });
+        });
+
+        function applyFilters() {
+            var startDate = document.getElementById('startDate').value;
+            var endDate = document.getElementById('endDate').value;
+
+            // Get the DataTable instance
+            var table = $('#example1').DataTable();
+
+            // Clear the existing filters
+            table.search('').columns().search('').draw();
+
+            // Apply new filters
+            if (startDate || endDate) {
+                // Use the existing code for start and end date filtering
+                var rows = table.rows().nodes();
+                for (var i = 0; i < rows.length; i++) {
+                    var row = rows[i];
+                    var created_at = row.cells[5].innerText;
+                    var hideRow = false;
+
+                    if (startDate && new Date(created_at) < new Date(startDate)) {
+                        hideRow = true;
+                    }
+
+                    if (endDate && new Date(created_at.split(' ')[0]) > new Date(endDate)) {
+                        hideRow = true;
+                    }
+
+                    row.style.display = hideRow ? 'none' : '';
+                }
+            }
+
+
+            // Redraw the table
+            table.draw();
+        }
+
+        function clearFilters() {
+            // Clear the filter values
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+
+
+            // Get the DataTable instance
+            var table = $('#example1').DataTable();
+
+            // Clear all column filters
+            table.columns().search('').draw();
+
+            // Clear the global search filter
+            table.search('').draw();
+
+            // Redraw the table to show all records
+            table.page.len(-1).draw();
+
+            var table = document.getElementById('example1');
+            var rows = table.getElementsByTagName('tr');
+
+            for (var i = 1; i < rows.length; i++) {
+                rows[i].style.display = '';
+            }
+        }
+
+    </script>
+
+
+
+</body>
+
+
+
+
+</html>
